@@ -14,10 +14,21 @@ class HomeScreen extends StatelessWidget {
     final productsService = Provider.of<ProductsService>(context);
     final products = productsService.products;
 
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     if (productsService.isLoading) return const LoadingScreen();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Productos')),
+      appBar: AppBar(
+        title: const Text('Productos'),
+        leading: IconButton(
+          icon: const Icon(Icons.login_outlined),
+          onPressed: () {
+            authService.logout();
+            Navigator.pushReplacementNamed(context, 'login');
+          },
+        ),
+      ),
       body: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: products.length,
